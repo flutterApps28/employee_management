@@ -15,21 +15,21 @@ class EmployeeController extends GetxController {
   }
 
   Future<void> fetchEmployees() async {
-    try {
-      isLoading(true);
-      final response = await http.get(Uri.parse(ApiService.empUrl));
-      if (response.statusCode == 200) {
-        employees.value = employeeModelFromJson(response.body);
-      } else {
-        Get.snackbar('Error', 'Failed to load employees');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load employees');
-    } finally {
-      isLoading(false);
+  try {
+    isLoading(true);
+    final response = await http.get(Uri.parse(ApiService.empUrl));
+    if (response.statusCode == 200) {
+      employees.value = employeeModelFromJson(response.body);
+    } else {
+      Get.snackbar('Error', 'Failed to load employees: ${response.reasonPhrase}');
     }
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to load employees: $e');
+  } finally {
+    isLoading(false);
   }
-  
+}
+
   List<EmployeeModel> get filteredEmployees {
     if (searchText.value.isEmpty) {
       return employees;
